@@ -1,0 +1,33 @@
+/*
+  Possible Animations:
+  enter
+  leave
+  appear Must set transitionAppear={true} on animation component
+  This animates when order is added to the order list. See <CSSTransitionGroup> tag in Order.js
+*/
+.order-enter
+  background red
+  transition all 0.5s
+  /* Move the order off screen horizontally */
+  transform translateX(-120%)
+  max-height 0
+  /* Override the default in CSS with "!important" */
+  padding 0 !important
+  /* "&." is the same as ".order-enter.order-enter-active". The "&" is replaced by the parent selector */
+  &.order-enter-active
+    background yellow
+    /* Max height was originally 0, animate it from 0 to 60px. Can't use auto height because you can only transition from fixed height */
+    max-height 60px
+    padding 2rem 0 !important 
+    transform translateX(0)
+
+/*
+  This animates when order is removed from the order list
+*/  
+.order-leave
+  transition all 0.5s
+  transform translateX(0)
+  &.order-leave-active
+    transform translateX(120%)
+    max-height 0
+    padding 0;
