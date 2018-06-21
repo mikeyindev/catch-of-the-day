@@ -3,7 +3,7 @@
 
 This project uses React and Firebase to build an ecommerce platform for seafood with order cart and inventory managemenet.
 
-**Click [here](https://mikeyindev.github.io/cornucopia-of-the-sea/) to see the app in action!**
+**Click [here](https://mikeyindev.github.io/cornucopia-of-the-sea/) to see the app in action!** Deployed on GitHub Pages.
 
 # Dependencies:
 
