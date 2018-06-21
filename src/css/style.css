@@ -2,8 +2,7 @@
   background: #f00;
   transition: all 0.5s;
 /* Move the order off screen horizontally */
-  -webkit-transform: translateX(-120%);
-          transform: translateX(-120%);
+  transform: translateX(-120%);
   max-height: 0;
 /* Override the default in CSS with "!important" */
   padding: 0 !important;
@@ -14,19 +13,37 @@
 /* Max height was originally 0, animate it from 0 to 60px. Can't use auto height because you can only transition from fixed height */
   max-height: 60px;
   padding: 2rem 0 !important;
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
+  transform: translateX(0);
 }
-.order-leave {
+.order-exit {
   transition: all 0.5s;
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
+  transform: translateX(0);
 }
-.order-leave.order-leave-active {
-  -webkit-transform: translateX(120%);
-          transform: translateX(120%);
+.order-exit.order-exit-active {
+  transform: translateX(120%);
   max-height: 0;
   padding: 0;
+}
+.count-enter {
+  background: #f00;
+  transition: 0.5s;
+  transform: translateY(100%);
+}
+.count-enter.count-enter-active {
+  background: #ff0;
+  transform: translateY(0);
+}
+.count-exit {
+  background: #000;
+  transform: translateY(0);
+  transition: 0.5s;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+.count-exit.count-exit-active {
+  background: #008000;
+  transform: translateY(-100%) scale(3);
 }
 @font-face {
   font-family: "haymakerregular";
@@ -238,27 +255,22 @@ header.top {
   text-align: center;
 }
 header.top h1 {
-  font-size: 14.4rem;
+  font-size: 8.4rem;
   line-height: 0.7;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+      justify-content: center;
 }
 header.top h1 .ofThe {
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   font-size: 3rem;
   color: #f5a623;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
   background: url("images/anchor.svg") center no-repeat;
   background-size: cover;
   padding: 0 1rem;
@@ -298,23 +310,19 @@ header.top h3:after {
   top: auto;
   bottom: 7px;
 }
-.catch-of-the-day {
-  display: -webkit-box;
+.cornucopia-of-the-sea {
   display: -ms-flexbox;
   display: flex;
   height: 90vh;
   max-width: 1500px;
   margin: 0 auto;
   margin-top: 5vh;
-  -webkit-perspective: 1000px;
-          perspective: 1000px;
-  -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
-.catch-of-the-day > * {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 4 auto;
-          flex: 1 4 auto;
+.cornucopia-of-the-sea > * {
+  -ms-flex: 1 4 auto;
+      flex: 1 4 auto;
   padding: 2rem;
   border: 1rem double #1a1a1a;
   position: relative;
@@ -323,32 +331,28 @@ header.top h3:after {
   box-shadow: 0 5px 5px rgba(0,0,0,0.1);
   overflow: scroll;
 }
-.catch-of-the-day > *:first-child {
+.cornucopia-of-the-sea > *:first-child {
   -ms-flex-negative: 1;
       flex-shrink: 1;
   -ms-flex-preferred-size: 50%;
       flex-basis: 50%;
-  -webkit-transform: translateX(50%) rotateY(6deg) translateX(-50%);
-          transform: translateX(50%) rotateY(6deg) translateX(-50%);
+  transform: translateX(50%) rotateY(6deg) translateX(-50%);
 }
-.catch-of-the-day > *:nth-child(2) {
-  -webkit-transform: translateX(-50%) rotateY(-14deg) translateX(50%);
-          transform: translateX(-50%) rotateY(-14deg) translateX(50%);
+.cornucopia-of-the-sea > *:nth-child(2) {
+  transform: translateX(-50%) rotateY(-14deg) translateX(50%);
   border-left: 0;
   border-right: 0;
   min-width: 300px;
 }
-.catch-of-the-day > *:last-child {
+.cornucopia-of-the-sea > *:last-child {
   -ms-flex-negative: 1;
       flex-shrink: 1;
   -ms-flex-preferred-size: 50%;
       flex-basis: 50%;
-  -webkit-transform: translateX(-50%) rotateY(10deg) translateX(50%) scale(1.08) translateX(24px);
-          transform: translateX(-50%) rotateY(10deg) translateX(50%) scale(1.08) translateX(24px);
+  transform: translateX(-50%) rotateY(10deg) translateX(50%) scale(1.08) translateX(24px);
 }
-input#fold:not(:checked) ~ #main .catch-of-the-day > * {
-  -webkit-transform: none;
-          transform: none;
+input#fold:not(:checked) ~ #main .cornucopia-of-the-sea > * {
+  transform: none;
 }
 label[for="fold"] {
   position: absolute;
@@ -377,16 +381,13 @@ ul {
 ul.order li {
   border-bottom: 1px solid #000;
   padding: 2rem 0;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   font-size: 1.4rem;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
 }
 ul.order li:hover button {
   display: inline;
@@ -424,7 +425,6 @@ ul.order li span.count span {
   margin-bottom: 20px;
   border: 2px solid #000;
   overflow: hidden;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -467,8 +467,7 @@ ul.order li span.count span {
   border-bottom: 1px solid #000;
   padding-top: 5px;
   margin-top: 2rem;
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
+  transform: translateZ(0);
 }
 .menu-fish {
   border-bottom: 2px solid #000;
@@ -485,21 +484,17 @@ ul.order li span.count span {
 }
 .menu-fish .fish-name {
   margin: 0;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
 }
 .menu-fish .price {
   font-size: 1.4rem;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -ms-flex-pack: end;
+      justify-content: flex-end;
 }
 .menu-fish img {
   float: left;
@@ -523,8 +518,7 @@ input[type=submit][disabled] {
   color: #d12028;
   background: #fff;
   border-color: #d12028;
-  -webkit-transform: rotate(-10deg) scale(2) translateX(50%) translateY(-50%);
-          transform: rotate(-10deg) scale(2) translateX(50%) translateY(-50%);
+  transform: rotate(-10deg) scale(2) translateX(50%) translateY(-50%);
 }
 button[disabled]:hover,
 input[type=submit][disabled]:hover {

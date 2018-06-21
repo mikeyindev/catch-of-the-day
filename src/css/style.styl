@@ -5,9 +5,10 @@
 header.top
   text-align center
   h1
-    font-size 14.4rem
+    font-size 8.4rem
     line-height 0.7 // this font has a wacky baseline
     display flex
+    // flex-wrap wrap
     justify-content: center;
 
     // This is a bunch of goofy CSS to make the logo look decent
@@ -51,7 +52,7 @@ header.top
       bottom 7px
 
 
-.catch-of-the-day
+.cornucopia-of-the-sea
   display flex
   height 90vh
   max-width:1500px
@@ -85,7 +86,7 @@ header.top
 // Folding Transforms
 // Take off folding when not checked
 input#fold:not(:checked) ~ #main
-  .catch-of-the-day > *
+  .cornucopia-of-the-sea > *
       transform none
 
 label[for="fold"]

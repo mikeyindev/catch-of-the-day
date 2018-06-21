@@ -1,76 +1,97 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { formatPrice } from '../helpers';
 // For animating CSS
-import CSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 class Order extends React.Component {
-    constructor() {
-        super();
-        this.renderOrder = this.renderOrder.bind(this);
-    }
+  static propTypes = {
+    fishes: PropTypes.object.isRequired,
+    order: PropTypes.object.isRequired,
+    removeFromOrder: PropTypes.func.isRequired
+  };
 
-    renderOrder(key) {
-        const fish = this.props.fishes[key];
-        const count = this.props.order[key];
-        // JSX elements can be assigned to a variable
-        const removeButton = <button onClick={() => this.props.removeFromOrder(key)}>&times;</button>
+  renderOrder = (key) => {
+      const fish = this.props.fishes[key];
+      const count = this.props.order[key];
+      const isAvailable = fish && fish.status === 'available';
+      const transitionOptions = {
+        classNames: "order",
+        key,
+        timeout: { enter: 500, exit: 500 }
+      };
 
-        if(!fish || fish.status === 'unavailable') {
-            // React likes to be able to identify the specific list element, 
-            // that's why we provide a key.
-            // If the fish is not null, then return its name, otherwise just 
-            // return 'fish' 
-            return <li key={key}>Sorry, {fish ? fish.name : 'fish'} is no longer available {removeButton}</li>
-        }
+      // JSX elements can be assigned to a variable
+      const removeButton = <button onClick={() => this.props.removeFromOrder(key)}>&times;</button>
 
-        return (
-            <li key={key}>
-                <span>{count}lbs {fish.name}</span>
-                <span className="price">{formatPrice(count * fish.price)}</span>
-                {removeButton}
-            </li>
-        )
-    }
+      if(!isAvailable) {
+          // React likes to be able to identify the specific list element, 
+          // that's why we provide a key.
+          // If the fish is not null, then return its name, otherwise just 
+          // return 'fish' 
+          return (
+            <CSSTransition {...transitionOptions}>
+              <li key={key}>Sorry, {fish ? fish.name : 'fish'} is no longer available {removeButton}
+              </li>
+            </CSSTransition>
+          );
+      }
 
-    render() {
-        const orderIds = Object.keys(this.props.order);
-        const total = orderIds.reduce((prevTotal, key) => {
-            const fish = this.props.fishes[key];
-            const count = this.props.order[key];
-            const isAvailable = fish && fish.status === 'available';
-            // If the fish being added to the order is available, update the 
-            // total
-            if(isAvailable) {
-                return prevTotal + (count * fish.price || 0)
-            }
-            // Else just return the previous total before the fish is added
-            return prevTotal;
-        // '0' is the initial value passed to reduce()
-        }, 0)
-        return(
-            <div className="order-wrap">
-                <h2>Your Order</h2>
-                <CSSTransitionGroup className="order"
-                    component="ul"
-                    transitionName="order"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={5000}
+      return (
+        <CSSTransition {...transitionOptions}>
+          <li key={key}>
+            <span>
+              <TransitionGroup component="span" className="count">
+                <CSSTransition
+                  classNames="count"
+                  key={count}
+                  timeout={500}
                 >
-                    {orderIds.map(this.renderOrder)}
-                    <li className="total">
-                        <strong>Total:</strong>
-                        {formatPrice(total)}
-                    </li>
-                </CSSTransitionGroup>
-            </div>
-        )
-    }
-}
+                </CSSTransition>
+              </TransitionGroup>
+              lbs {fish.name}
+              {formatPrice(count * fish.price)}
+              <button onClick={() => this.props.removeFromOrder(key)}>
+                &times; {/*The 'x' symbol*/}
+              </button>
+            </span>
+          </li>
+        </CSSTransition>
+      );
+  };
 
-Order.propTypes = {
-    fishes: React.PropTypes.object.isRequired,
-    order: React.PropTypes.object.isRequired,
-    removeFromOrder: React.PropTypes.func.isRequired
+  render() {
+      const orderIds = Object.keys(this.props.order);
+      const total = orderIds.reduce((prevTotal, key) => {
+          const fish = this.props.fishes[key];
+          const count = this.props.order[key];
+          const isAvailable = fish && fish.status === 'available';
+          // If the fish being added to the order is available, update the 
+          // total
+          if(isAvailable) {
+              return prevTotal + (count * fish.price || 0)
+          }
+          // Else just return the previous total before the fish is added
+          return prevTotal;
+      // '0' is the initial value passed to reduce()
+      }, 0);
+
+      return(
+          <div className="order-wrap">
+              <h2>Your Order</h2>
+              <TransitionGroup
+                component="ul"
+                className="order"
+              >
+                {orderIds.map(this.renderOrder)}
+              </TransitionGroup>
+              <div className="total">
+                Total:
+                <strong>{formatPrice(total)}</strong>
+              </div>
+          </div>
+      )
+  }
 }
 
 export default Order;
