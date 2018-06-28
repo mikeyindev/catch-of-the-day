@@ -1,8 +1,14 @@
 {
-  "name": "cots",
+  "name": "cornucopia-of-the-sea",
+  "author": "Mike Yin",
+  "license": "MIT",
   "version": "0.0.1",
   "private": true,
   "homepage": "https://mikeyindev.github.io/cornucopia-of-the-sea/",
+  "engines": {
+    "node": "8.11.3",
+    "npm": "5.6.0"
+  },
   "devDependencies": {
     "autoprefixer-stylus": "0.10.0",
     "concurrently": "3.0.0",
