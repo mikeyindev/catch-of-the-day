@@ -8,10 +8,21 @@ import base from '../base';
 import PropTypes from 'prop-types';
 
 class App extends React.Component {
-  state = {
-    // fishes is an object containing many fish objects
-    fishes: {},
-    order: {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      // fishes is an object containing many fish objects
+      fishes: {},
+      order: {}
+    }
+    
+    this.addFish = this.addFish.bind(this);
+    this.updateFish = this.updateFish.bind(this);
+    this.removeFish = this.removeFish.bind(this);
+    this.addToOrder = this.addToOrder.bind(this);
+    this.removeFromOrder = this.removeFromOrder.bind(this);
+    this.removeFromOrder = this.removeFromOrder.bind(this);
+    this.loadSamples = this.loadSamples.bind(this);
   }
 
   static propTypes = {

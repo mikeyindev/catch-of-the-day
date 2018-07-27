@@ -5,6 +5,11 @@ import { formatPrice } from '../helpers';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 class Order extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderOrder = this.renderOrder.bind(this);
+  }
+
   static propTypes = {
     fishes: PropTypes.object.isRequired,
     order: PropTypes.object.isRequired,
@@ -47,6 +52,7 @@ class Order extends React.Component {
                   key={count}
                   timeout={500}
                 >
+                  <span>{count}</span>
                 </CSSTransition>
               </TransitionGroup>
               lbs {fish.name}

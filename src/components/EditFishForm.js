@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class EditFishForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   static propTypes = {
     fish: PropTypes.shape({
       image: PropTypes.string,
@@ -59,7 +64,7 @@ class EditFishForm extends React.Component {
           onChange={this.handleChange}
           value={this.props.fish.image}
         />
-        <button onClick={() => this.props.deleteFish(this.props.index)}>
+        <button onClick={() => this.props.removeFish(this.props.index)}>
           Remove Fish
         </button>
       </div>

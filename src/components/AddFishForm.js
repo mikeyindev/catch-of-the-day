@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class AddFishForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.createFish = this.createFish.bind(this);
+  }
+
   static propTypes = {
     addFish: PropTypes.func
   };
@@ -13,7 +18,7 @@ class AddFishForm extends React.Component {
 
     const fish = {
       name: this.name.value,
-      price: this.price.value,
+      price: parseFloat(this.price.value),
       status: this.status.value,
       desc: this.desc.value,
       image: this.image.value

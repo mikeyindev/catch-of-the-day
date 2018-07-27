@@ -7,6 +7,18 @@ import PropTypes from 'prop-types';
 import EditFishForm from './EditFishForm';
 
 class Inventory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: null,
+      owner: null
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.authHandler = this.authHandler.bind(this);
+    this.authenticate = this.authenticate.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
   static propTypes = {
     fishes: PropTypes.object,
     updateFish: PropTypes.func,
@@ -16,31 +28,28 @@ class Inventory extends React.Component {
     storeId: PropTypes.string
   };
 
-  state = {
-    uid: null,
-    owner: null
-  };
-
   // Every time we reload the page, it'll run authHandler() again which will do
   // all the checking and set all the state without requiring the user to login
   // again
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) { this.authHandler({ user }); }
+      if (user) {
+        this.authHandler({ user });
+      }
     });
   }
 
   // Triggered by onChange
   handleChange(e, key) {
-      const fish = this.props.fishes[key];
-      console.log(e.target.name, e.target.value);
-      // We're using "computed properties" to update whatever's being changed 
-      // rather than specifying using if-statements.
-      const updatedFish = {
-          ...fish, // Unpacking all the properties of fish
-          [e.target.name]: e.target.value
-      }
-      this.props.updateFish(key, updatedFish);
+    const fish = this.props.fishes[key];
+    console.log(e.target.name, e.target.value);
+    // We're using "computed properties" to update whatever's being changed
+    // rather than specifying using if-statements.
+    const updatedFish = {
+      ...fish, // Unpacking all the properties of fish
+      [e.target.name]: e.target.value
+    };
+    this.props.updateFish(key, updatedFish);
   }
 
   // authHandler(res) {
@@ -70,7 +79,7 @@ class Inventory extends React.Component {
     // Look up current store in Firebase
     const store = base.fetch(this.props.storeId, { context: this });
     console.log(store);
-    
+
     if (!store.owner) {
       base.post(`${this.props.storeId}/owner`, {
         data: authData.user.uid
@@ -86,7 +95,7 @@ class Inventory extends React.Component {
 
   authenticate = (provider) => {
     console.log(`Trying to log in with ${provider}`);
-      // let authProvider = new firebase.auth[`${provider}AuthProvider`]() 
+    // let authProvider = new firebase.auth[`${provider}AuthProvider`]()
     let authProvider;
     switch (provider) {
       case 'github':
@@ -105,41 +114,44 @@ class Inventory extends React.Component {
       default:
         return;
     }
-      console.log(authProvider);
-      firebase.auth().signInWithPopup(authProvider).then(this.authHandler);
-  }
+    console.log(authProvider);
+    firebase
+      .auth()
+      .signInWithPopup(authProvider)
+      .then(this.authHandler);
+  };
 
   logout = () => {
     console.log('Logging out');
     firebase.auth().signOut();
     this.setState({ uid: null });
-  }
+  };
 
   render() {
     const logout = <button onClick={this.logout}>Log Out!</button>;
     // Check if the user is logged i.n If not, render the login buttons. We're
     // storing uid in state
-    if(!this.state.uid) {
-      return <Login authenticate={this.authenticate} />
+    if (!this.state.uid) {
+      return <Login authenticate={this.authenticate} />;
     }
 
     // Check it the user is the owner of the store
-    if(this.state.uid !== this.state.owner) {
+    if (this.state.uid !== this.state.owner) {
       return (
         <div>
           <p>Sorry, you aren't the owner of this store</p>
           {logout}
         </div>
-      )
+      );
     }
 
     // If the user is the owner, render the inventory
-    return(
+    return (
       <div>
         <h2>Inventory</h2>
         {logout}
-        {Object.keys(this.props.fishes).map(key => (
-          <EditFishForm 
+        {Object.keys(this.props.fishes).map((key) => (
+          <EditFishForm
             key={key}
             index={key}
             fish={this.props.fishes[key]}
@@ -147,12 +159,12 @@ class Inventory extends React.Component {
             removeFish={this.props.removeFish}
           />
         ))}
-        { /* Because addFish() is added to the props of Inventory. To call it, we need to access Inventory's props */ }
+        {/* Because addFish() is added to the props of Inventory. To call it, we need to access Inventory's props */}
         <AddFishForm addFish={this.props.addFish} />
-        { /* We do the same here as loadSamples is added to Inventory's props */ }
+        {/* We do the same here as loadSamples is added to Inventory's props */}
         <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
       </div>
-    )
+    );
   }
 }
 
